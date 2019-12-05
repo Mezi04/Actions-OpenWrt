@@ -65,7 +65,7 @@ jobs:
     - name: Extra Software
       run: |
          git clone --depth 1 https://github.com/vernesong/OpenClash.git -b master OpenClash
-         cp -R OpenClash/luci-app-openclash openwrt/lede/package/
+         cp -R OpenClash/luci-app-openclash openwrt/package/
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
