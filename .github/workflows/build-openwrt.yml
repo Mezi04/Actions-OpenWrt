@@ -124,4 +124,4 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: n1 firmware
-        path: mknop/out/openwrt-n1-auto-generate.img
+        path: mknop/out
