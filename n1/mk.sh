@@ -1,5 +1,5 @@
 #!/bin/bash
-# 代码来源于tuanqing一键n1/贝壳云的一键脚本 (gayhub地址：https://github.com/tuanqing/mknop)，为了简化去掉了所有交互，直接设默认值
+# 代码来源于tuanqing一键n1/贝壳云的一键脚本 (github地址：https://github.com/tuanqing/mknop)，为了简化去掉了所有交互，直接设默认值
 red="\033[31m"
 green="\033[32m"
 white="\033[0m"
@@ -8,7 +8,7 @@ out_dir=out
 openwrt_dir=openwrt
 boot_dir="/media/boot"
 rootfs_dir="/media/rootfs"
-device=""
+device="n1"
 loop=
 
 
@@ -79,7 +79,7 @@ loop=$(sudo losetup -P -f --show *.img)
     echo -e "$red \n 格式化失败! $white" &&
     exit
 
-mkfs.vfat -n "BOOT" ${loop}p1 > /dev/null 2>&1
+sudo mkfs.vfat -n "BOOT" ${loop}p1 > /dev/null 2>&1
 sudo mke2fs -F -q -t ext4 -L "ROOTFS" -m 0 ${loop}p2 > /dev/null 2>&1
 
 # 挂载分区
@@ -109,14 +109,5 @@ fi
 sudo rm -rf $boot_dir
 sudo rm -rf $rootfs_dir
 sudo rm -rf $out_dir/openwrt
-
-# 添加idb标识以及uboot
-if [ $device = "beikeyun" ]; then
-    img=$(ls -l $out_dir | grep img | awk '{ print $9 }')
-    echo -e "$green \n 写入idb... $white"
-    dd if=armbian/beikeyun/loader/idbloader.img of=$out_dir/$img bs=16 seek=2048 conv=notrunc > /dev/null 2>&1
-    echo -e "$green \n 写入uboot... $white"
-    dd if=armbian/beikeyun/loader/uboot.img of=$out_dir/$img bs=16 seek=524288 conv=notrunc > /dev/null 2>&1
-fi
 
 echo -e "$green \n 制作成功, 输出文件夹 --> $out_dir $white"
