@@ -14,11 +14,11 @@ on:
     branches: 
       - master
     paths:
-      - 'n1/.config'
+      - 'n1/openwrt-mix/.config'
 #  schedule:
 #    - cron: 0 8 * * 5
-  watch: 
-    types: [started]
+#  watch: 
+#    types: [started]
 
 jobs:
   build:
@@ -32,41 +32,33 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        docker rmi `docker images -q`
         echo "Deleting files, please wait ..."
-        sudo rm -rf \
-          /usr/share/dotnet \
-          /etc/mysql \
-          /etc/php
-        sudo -E apt-get -y purge \
-          azure-cli \
-          ghc* \
-          zulu* \
-          hhvm \
-          llvm* \
-          firefox \
-          google* \
-          dotnet* \
-          powershell \
-          openjdk* \
-          mysql* \
-          php*
-        sudo -E apt-get update
-        sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
-        sudo -E apt-get -y autoremove --purge
-        sudo -E apt-get clean
+        sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d/*
+        sudo swapoff /swapfile
+        sudo rm -f /swapfile
+        #docker rmi `docker images -q`
+        #sudo -E apt-get -q purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        curl -fsSL https://raw.githubusercontent.com/P3TERX/dotfiles/master/.bashrc >> ~/.bashrc
+        sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
     - name: Clone source code
       env: 
-        REPO_URL: https://github.com/coolsnowwolf/lede
+        REPO_URL: https://github.com/openwrt/openwrt
         REPO_BRANCH: master
       run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
       
     - name: Extra Software
       run: |
+         echo "src-git lienol https://github.com/Lienol/openwrt-package" >> openwrt/feeds.conf.default
+         # add openclash
          git clone --depth 1 https://github.com/vernesong/OpenClash.git -b master OpenClash
          cp -R OpenClash/luci-app-openclash openwrt/package/
-
+         
+         
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
 
@@ -75,7 +67,7 @@ jobs:
 
     - name: Load custom configuration
       env:
-        CONFIG_FILE: 'n1/.config'
+        CONFIG_FILE: 'n1/openwrt-mix/.config'
         DIY_SH: 'diy.sh'
       run: |
         [ -e files ] && mv files openwrt/files
@@ -84,9 +76,6 @@ jobs:
         cd openwrt
         ../$DIY_SH
         make defconfig
-
-#    - name: SSH connection to Actions
-#      uses: P3TERX/debugger-action@master
 
     - name: Download package
       run: |
@@ -107,21 +96,16 @@ jobs:
         chmod 755 mknop/nmk.sh 
         cp openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz mknop/openwrt/
         cd mknop && ./nmk.sh
+        
+    - name: Package fireware
+      run: |     
+          mkdir images
+          cp mknop/out/$(date +%Y-%m-%d)-openwrt-n1-auto-generate.img ./images/
+          cp openwrt/bin/packages ./images/
+          cp openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz ./imags/
 
-    - name : Upload packages
+    - name : Upload imags
       uses: actions/upload-artifact@master
       with:
         name: OpenWrt packages
-        path: openwrt/bin/packages
-
-    - name : Upload targets
-      uses: actions/upload-artifact@master
-      with:
-        name: OpenWrt firmware
-        path: openwrt/bin/targets
-        
-    - name : Upload n1 fireware
-      uses: actions/upload-artifact@master
-      with:
-        name: n1 firmware
-        path: mknop/out
+        path: imags
