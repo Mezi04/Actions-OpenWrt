@@ -107,7 +107,7 @@ jobs:
           mkdir images
           cp mknop/out/$(date +%Y-%m-%d)-openwrt-n1-auto-generate.img ./images/
           cp -R openwrt/bin/packages ./images/
-          cp openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz ./imags/
+          cp openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz ./images/
 
     - name : Upload imags
       uses: actions/upload-artifact@master
