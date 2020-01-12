@@ -1,4 +1,4 @@
-# 基于P3TERX项目修改openwrt ci
+# 基于P3TERX项目的openwrt ci
 
 ## 说明
 
