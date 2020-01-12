@@ -1,4 +1,4 @@
-# 基于P3TERX项目的openwrt ci
+# 适用斐讯n1的openwrt ci
 
 ## 说明
 
