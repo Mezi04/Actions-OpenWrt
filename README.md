@@ -1,4 +1,4 @@
-# 基于[P3TERX项目](https://github.com/P3TERX/Actions-OpenWrt)修改openwrt ci
+# 基于P3TERX项目修改openwrt ci
 
 ## 说明
 
@@ -12,7 +12,7 @@
   -  [build-openwrt-n1.yml](https://github.com/Mezi04/Actions-OpenWrt/blob/master/.github/workflows/build-openwrt-n1.yml) ：原版Openwrt杂交Lienol的package
   - 两个workflow都会添加额外的openclash进固件，如不喜欢可自行注释
 
-## 感谢以下大大的无私奉献
+## 感谢以下作者的无私奉献
 
 - P3TERX [Action-Openwrt](https://github.com/P3TERX/Actions-OpenWrt)
 
