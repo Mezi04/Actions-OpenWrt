@@ -5,7 +5,7 @@
 - 编译完成的zip包中有三个文件/文件夹
   - .tar.gz可以用于docker
   - .img是openwrt直刷包，可刷入u盘直接使用，也可以刷入emmc
-  - packages为本次编译中产生的所有ipk(包含未打包进固件)
+  - packages为本次编译中产生的所有ipk(包含未打包进固件的插件)
 
 - 目前有两个workflow
   -   [build-lean-n1.yml](https://github.com/Mezi04/Actions-OpenWrt/blob/master/.github/workflows/build-lean-n1.yml) ：基于Lean维护的Openwrt分支，插件较全
