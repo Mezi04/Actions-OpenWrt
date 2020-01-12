@@ -8,8 +8,8 @@
   - packages为本次编译中产生的所有ipk(包含未打包进固件)
 
 - 目前有两个workflow
-  -   [build-lean-n1.yml](https://github.com/Mezi04/Actions-OpenWrt/blob/master/.github/workflows/build-lean-n1.yml) ：Lean维护的Openwrt项目
-  -  [build-openwrt-n1.yml](https://github.com/Mezi04/Actions-OpenWrt/blob/master/.github/workflows/build-openwrt-n1.yml) ：原版Openwrt杂交Lienol的package
+  -   [build-lean-n1.yml](https://github.com/Mezi04/Actions-OpenWrt/blob/master/.github/workflows/build-lean-n1.yml) ：基于Lean维护的Openwrt分支，插件较全
+  -  [build-openwrt-n1.yml](https://github.com/Mezi04/Actions-OpenWrt/blob/master/.github/workflows/build-openwrt-n1.yml) ：原版Openwrt（19.0.7分支）杂交Lienol的package，插件较少
   - 两个workflow都会添加额外的openclash进固件，如不喜欢可自行注释
 
 ## 感谢以下作者的无私奉献
