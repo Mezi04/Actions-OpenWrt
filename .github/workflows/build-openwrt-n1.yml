@@ -55,11 +55,14 @@ jobs:
       run: |
          # echo "src-git lienol https://github.com/Lienol/openwrt-package" >> openwrt/feeds.conf.default
          # add openclash
+         git clone --depth 1 https://github.com/coolsnowwolf/lede -b master lede
+         
          git clone --depth 1 https://github.com/vernesong/OpenClash.git -b master OpenClash
          cp -R OpenClash/luci-app-openclash openwrt/package/
          git clone https://github.com/Lienol/openwrt-package.git openwrt-package
-         cp -R openwrt-package/* openwrt/package/
-         git clone https://github.com/kuoruan/luci-app-frpc.git openwrt/package/luci-app-frpc
+         cp -fR openwrt-package/lienol/* openwrt/package/
+         cp -fR openwrt-package/package/* openwrt/package/
+         cp -fR lede/package/lean/* openwrt/package/
          
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
