@@ -101,7 +101,7 @@ jobs:
         
     - name: Generate fireware for phicomm N1
       run: |
-        git clone --depth 1 https://github.com/tuanqing/mknop.git -b master 
+        git clone --depth 1 https://github.com/me2in/mknop.git -b master 
         mv n1/mk.sh mknop/nmk.sh
         chmod 755 mknop/nmk.sh 
         cp openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz mknop/openwrt/
